@@ -6,208 +6,129 @@
     <title>Minecraft Creator Awards</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        @keyframes dayNightCycle {
-            0%, 25% {
-                background-color: #87CEEB; /* Day sky color */
-            }
-            25%, 50% {
-                background-color: #FF4500; /* Sunrise */
-            }
-            50%, 75% {
-                background-color: #000; /* Night sky color */
-            }
-            75%, 100% {
-                background-color: #1E90FF; /* Sunset */
-            }
-        }
-
         body {
-            animation: dayNightCycle 120s infinite; /* 120 seconds for full cycle */
-            position: relative;
-            overflow: hidden;
-            color: black; /* Default text color */
+            color: white;
+            background: black; 
+            overflow-x: hidden;
         }
 
-        .sun {
-            position: absolute;
-            top: 20%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, #FFD700, #FFA500);
-            border-radius: 50%;
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.6);
-            animation: sunRise 120s infinite;
-        }
-
-        @keyframes sunRise {
-            0%, 50% {
-                opacity: 1; /* Visible during day */
-                top: 20%; /* Sun position */
-            }
-            25%, 75% {
-                top: 40%; /* Rising and setting position */
-            }
-            50%, 100% {
-                opacity: 0; /* Invisible during night */
-                top: 100%; /* Move out of view */
-            }
-        }
-
-        .moon {
-            position: absolute;
-            top: 20%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(30deg);
-            width: 80px;
-            height: 80px;
-            background: #fff;
-            border-radius: 50%;
-            box-shadow: 0 0 50px rgba(255, 255, 255, 0.6);
-            clip-path: ellipse(50% 100% at 50% 0%);
-            animation: moonRise 120s infinite;
-        }
-
-        @keyframes moonRise {
-            0%, 50% {
-                opacity: 0; /* Invisible during day */
-                top: 100%; /* Move out of view */
-            }
-            50%, 100% {
-                opacity: 1; /* Visible during night */
-                top: 20%; /* Moon position */
-            }
-        }
-
-        .terrain {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 100px;
-            background: #228B22; /* Grass color */
-            z-index: 1;
-        }
-
-        .star {
-            position: absolute;
-            border-radius: 50%;
-            background: white;
-            opacity: 0;
-            animation: starTwinkle 1s infinite;
-        }
-
-        @keyframes starTwinkle {
-            0%, 100% {
-                opacity: 0.5;
-            }
-            50% {
-                opacity: 1;
-            }
-        }
-
-        .stars {
-            display: none;
-            position: absolute;
+        .video-background {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
         }
 
-        body.night .stars {
-            display: block;
+        .video-background video {
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover;
+            opacity: 0.4; /* Lower opacity for a softer background effect */
         }
 
-        /* Styling for text */
-        .day-text {
-            color: black;
+        .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 20px;
         }
 
-        .night-text {
-            color: white;
-        }
-
-        /* Grid layout for video section */
+        /* Improved grid layout */
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
             width: 90%;
             margin: 20px auto;
             justify-items: center;
         }
+
+        /* Button and text hover effects */
+        button {
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        details summary {
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        details[open] summary {
+            color: #38bdf8; /* Tailwind's sky-400 color */
+        }
+
+        /* Smooth animation for details */
+        details {
+            transition: all 0.3s ease-in-out;
+            margin-bottom: 20px;
+        }
+
+        /* Responsiveness for video iframes */
+        iframe {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen relative">
-    <div class="sun"></div>
-    <div class="moon"></div>
-    <div class="terrain"></div>
     
-    <div class="stars">
-        <!-- Create stars using divs -->
-        <div class="star" style="top: 10%; left: 20%; width: 5px; height: 5px;"></div>
-        <div class="star" style="top: 15%; left: 50%; width: 3px; height: 3px;"></div>
-        <div class="star" style="top: 25%; left: 70%; width: 4px; height: 4px;"></div>
-        <div class="star" style="top: 30%; left: 80%; width: 6px; height: 6px;"></div>
-        <div class="star" style="top: 40%; left: 40%; width: 2px; height: 2px;"></div>
-        <div class="star" style="top: 50%; left: 60%; width: 4px; height: 4px;"></div>
-        <div class="star" style="top: 70%; left: 30%; width: 3px; height: 3px;"></div>
-        <div class="star" style="top: 80%; left: 75%; width: 5px; height: 5px;"></div>
-    </div>
-    
-    <h1 class="text-4xl font-bold mb-6 night-text">Minecraft Creator Awards</h1>
-    <p class="text-lg mb-6 night-text">Celebrate the creativity and innovation of Minecraft creators!</p>
-    
-    <!-- Video Section -->
-    <div class="video-grid" id="videoGrid">
-        <!-- Videos will be dynamically added here -->
+    <!-- Background Video -->
+    <div class="video-background">
+        <video autoplay muted loop>
+            <source src="https://files.catbox.moe/e4099x.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </div>
 
-    <a href="mailto:admin@minecraftcreatorawards.us.kg">
-        <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mb-8">
-            Get in Touch
+    <!-- Audio Music -->
+    <audio autoplay loop>
+        <source src="https://files.catbox.moe/1ez1it.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Content Section -->
+    <div class="content">
+        <h1 class="text-5xl font-bold mb-6">Minecraft Creator Awards</h1>
+        <p class="text-xl mb-6">Celebrate the creativity and innovation of Minecraft creators!</p>
+
+        <!-- Load Videos Button -->
+        <button id="loadVideos" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mb-8">
+            Load Award Videos
         </button>
-    </a>
+
+        <!-- Video Section -->
+        <div class="video-grid hidden" id="videoGrid">
+            <!-- Videos will be dynamically added here -->
+        </div>
+
+        <a href="mailto:admin@minecraftcreatorawards.us.kg">
+            <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mt-8">
+                Get in Touch
+            </button>
+        </a>
+    </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-4 w-full text-center">
+    <footer class="bg-gray-800 text-white py-4 w-full text-center mt-8">
         <p>&copy; 2024 Neon Corporation. All rights reserved.</p>
         <p>Contact: admin@minecraftcreatorawards.us.kg</p>
     </footer>
 
     <script>
-        const body = document.body;
-
-        // Function to switch between day and night
-        function checkTime() {
-            const currentTime = new Date();
-            const hours = currentTime.getHours();
-            if (hours >= 6 && hours < 18) { // Daytime from 6 AM to 6 PM
-                body.classList.remove('night');
-                body.classList.add('day');
-                document.querySelectorAll('.day-text').forEach(element => {
-                    element.style.color = 'black';
-                });
-                document.querySelectorAll('.night-text').forEach(element => {
-                    element.style.color = 'transparent';
-                });
-            } else { // Nighttime from 6 PM to 6 AM
-                body.classList.remove('day');
-                body.classList.add('night');
-                document.querySelectorAll('.day-text').forEach(element => {
-                    element.style.color = 'transparent';
-                });
-                document.querySelectorAll('.night-text').forEach(element => {
-                    element.style.color = 'white';
-                });
-            }
-        }
-
-        checkTime();
-        setInterval(checkTime, 60000);
+        // Fetch videos when button is clicked
+        document.getElementById('loadVideos').addEventListener('click', function() {
+            fetchVideos();
+            this.classList.add('hidden'); // Hide button after clicking
+        });
 
         // Fetch videos from the API
         function fetchVideos() {
@@ -215,19 +136,24 @@
                 .then(response => response.json())
                 .then(data => {
                     const videoGrid = document.getElementById('videoGrid');
+                    videoGrid.classList.remove('hidden'); // Show grid after loading
+
                     data.forEach(videoObj => {
                         const videoElement = document.createElement('div');
-                        videoElement.classList.add('w-full');
+                        videoElement.classList.add('w-full', 'text-center');
+
+                        // Use details and summary for each video
                         videoElement.innerHTML = `
-                            <iframe class="w-full" height="200" src="${videoObj.video}" title="Minecraft Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <details>
+                                <summary>Awards Video</summary>
+                                <iframe class="w-full" height="200" src="${videoObj.video}" ti="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </details>
                         `;
                         videoGrid.appendChild(videoElement);
                     });
                 })
                 .catch(error => console.error('Error fetching videos:', error));
         }
-
-        fetchVideos(); // Call the function to load videos
     </script>
 </body>
 </html>
