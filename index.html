@@ -8,8 +8,8 @@
     <style>
         body {
             color: white;
-            overflow: auto; /* Enable scrolling */
-            background: black; /* Default background color */
+            background: black; 
+            overflow-x: hidden;
         }
 
         .video-background {
@@ -18,7 +18,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* Behind content */
+            z-index: -1;
             overflow: hidden;
         }
 
@@ -26,9 +26,9 @@
             min-width: 100%;
             min-height: 100%;
             object-fit: cover;
+            opacity: 0.4; /* Lower opacity for a softer background effect */
         }
 
-        /* Styling for content */
         .content {
             position: relative;
             z-index: 2;
@@ -36,14 +36,46 @@
             padding: 20px;
         }
 
-        /* Grid layout for video section */
+        /* Improved grid layout */
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
             width: 90%;
             margin: 20px auto;
             justify-items: center;
+        }
+
+        /* Button and text hover effects */
+        button {
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        details summary {
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        details[open] summary {
+            color: #38bdf8; /* Tailwind's sky-400 color */
+        }
+
+        /* Smooth animation for details */
+        details {
+            transition: all 0.3s ease-in-out;
+            margin-bottom: 20px;
+        }
+
+        /* Responsiveness for video iframes */
+        iframe {
+            max-width: 100%;
+            height: auto;
         }
     </style>
 </head>
@@ -65,47 +97,63 @@
 
     <!-- Content Section -->
     <div class="content">
-        <h1 class="text-4xl font-bold mb-6">Minecraft Creator Awards</h1>
-        <p class="text-lg mb-6">Celebrate the creativity and innovation of Minecraft creators!</p>
+        <h1 class="text-5xl font-bold mb-6">Minecraft Creator Awards</h1>
+        <p class="text-xl mb-6">Celebrate the creativity and innovation of Minecraft creators!</p>
+
+        <!-- Load Videos Button -->
+        <button id="loadVideos" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mb-8">
+            Load Award Videos
+        </button>
 
         <!-- Video Section -->
-        <div class="video-grid" id="videoGrid">
+        <div class="video-grid hidden" id="videoGrid">
             <!-- Videos will be dynamically added here -->
         </div>
 
         <a href="mailto:admin@minecraftcreatorawards.us.kg">
-            <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mb-8">
+            <button class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mt-8">
                 Get in Touch
             </button>
         </a>
     </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-4 w-full text-center">
+    <footer class="bg-gray-800 text-white py-4 w-full text-center mt-8">
         <p>&copy; 2024 Neon Corporation. All rights reserved.</p>
         <p>Contact: admin@minecraftcreatorawards.us.kg</p>
     </footer>
 
     <script>
+        // Fetch videos when button is clicked
+        document.getElementById('loadVideos').addEventListener('click', function() {
+            fetchVideos();
+            this.classList.add('hidden'); // Hide button after clicking
+        });
+
         // Fetch videos from the API
         function fetchVideos() {
             fetch('https://sheetdb.io/api/v1/k3epoefif0c82')
                 .then(response => response.json())
                 .then(data => {
                     const videoGrid = document.getElementById('videoGrid');
+                    videoGrid.classList.remove('hidden'); // Show grid after loading
+
                     data.forEach(videoObj => {
                         const videoElement = document.createElement('div');
-                        videoElement.classList.add('w-full');
+                        videoElement.classList.add('w-full', 'text-center');
+
+                        // Use details and summary for each video
                         videoElement.innerHTML = `
-                            <iframe class="w-full" height="200" src="${videoObj.video}" title="Minecraft Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <details>
+                                <summary>Awards</summary>
+                                <iframe class="w-full" height="200" src="${videoObj.video}" title="Awards" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </details>
                         `;
                         videoGrid.appendChild(videoElement);
                     });
                 })
                 .catch(error => console.error('Error fetching videos:', error));
         }
-
-        fetchVideos(); // Call the function to load videos
     </script>
 </body>
 </html>
